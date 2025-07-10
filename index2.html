@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <title>CV - John Torres Alva</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        /* Define a clean and modern color palette using CSS variables */
+        :root {
+            --primary-dark: #2c3e50; /* Deep charcoal grey for the left column */
+            --accent-color: #1abc9c; /* Muted teal for highlights */
+            --text-dark: #333333; /* Soft black for main text */
+            --text-light: #ecf0f1; /* Off-white for text on dark backgrounds */
+            --body-background: #f8f9fa; /* Very light grey for the body background */
+            --white: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Lato', sans-serif; /* Modern sans-serif for body text */
+            background-color: var(--body-background);
+            margin: 0;
+            padding: 30px; /* More generous padding around the CV */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .cv-wrapper {
+            width: 210mm; /* A4 width */
+            min-height: 297mm; /* A4 height for better print predictability */
+            margin: 0 auto;
+            padding: 0;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12); /* Softer, more spread shadow */
+            display: flex;
+            background: var(--white);
+            border-radius: 6px; /* Slightly rounded corners for a modern touch */
+            overflow: hidden; /* Ensures content stays within rounded corners */
+        }
+
+        .left {
+            width: 30%; /* Slightly adjusted width for left column */
+            padding: 25px; /* Increased padding */
+            background-color: var(--primary-dark);
+            color: var(--text-light);
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Center content within the left column */
+        }
+
+        .right {
+            width: 70%; /* Adjusted width for right column */
+            padding: 25px; /* Increased padding */
+        }
+
+        h1, h2, h3, p, ul, li {
+            margin: 0;
+            padding: 0;
+            text-align: left;
+            color: var(--text-dark); /* Default text color for right column */
+        }
+
+        h2 {
+            font-family: 'Montserrat', sans-serif; /* Distinct font for main headings */
+            font-size: 1.5em; /* Larger main headings */
+            margin-bottom: 12px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid var(--accent-color); /* Accent line under main headings */
+            text-transform: uppercase; /* Make headings stand out */
+            letter-spacing: 0.5px;
+            position: relative; /* For positioning add section button */
+        }
+
+        h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.1em; /* Sub-headings slightly larger */
+            margin-top: 20px; /* More space before sub-headings */
+            margin-bottom: 8px;
+            color: var(--primary-dark); /* Use primary dark for sub-headings in right column */
+            position: relative; /* For positioning add/remove buttons */
+            display: flex; /* Allow content and button on same line */
+            align-items: center;
+            justify-content: space-between; /* Push button to the right */
+        }
+
+        .left h2, .left h3 {
+            color: var(--text-light); /* White/light text for headings in left column */
+            text-align: center; /* Center headings in left column */
+            border-bottom: none; /* No accent line for left column headings */
+        }
+
+        p {
+            font-size: 0.95em; /* Slightly larger paragraph text */
+            line-height: 1.6; /* Improved line height for readability */
+            margin-bottom: 10px;
+        }
+
+        ul {
+            padding-left: 22px; /* Standard indentation */
+            list-style-type: disc;
+            margin-top: 0;
+            margin-bottom: 10px;
+            position: relative; /* For positioning add list item button */
+        }
+
+        li {
+            font-size: 0.9em;
+            line-height: 1.4;
+            margin-top: 4px;
+            margin-bottom: 4px;
+            position: relative; /* For positioning remove button on list items */
+            padding-right: 25px; /* Space for remove button */
+        }
+
+        ul ul {
+            margin-top: 5px; /* Small margin for nested lists */
+            margin-bottom: 5px;
+        }
+        ul ul li {
+            font-size: 0.85em; /* Slightly smaller for nested items */
+            line-height: 1.3;
+        }
+
+        /* Specific adjustment for the last ul in each column */
+        .left ul:last-of-type,
+        .right ul:last-of-type {
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        /* Profile Photo Styling */
+        img#profilePhoto {
+            width: 150px; /* Consistent width and height for perfect circle */
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: var(--body-background); /* Background if image is not loaded */
+            display: block;
+            margin: 0 auto 20px auto; /* Centered with more space below */
+            border: 4px solid var(--text-light); /* Prominent white border */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+        }
+
+        /* Upload Button Styling */
+        .upload-btn {
+            margin-top: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            width: 100%; /* Ensure it spans the width for centering */
+        }
+        .upload-btn input[type="file"] {
+            /* Hide the default file input */
+            width: 0.1px;
+            height: 0.1px;
+            opacity: 0;
+            overflow: hidden;
+            position: absolute;
+            z-index: -1;
+        }
+        .upload-btn label {
+            background-color: var(--accent-color);
+            color: var(--white);
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+            display: inline-block; /* Treat as a block for padding/margin but allow inline positioning */
+        }
+        .upload-btn label:hover {
+            background-color: #16a085; /* Darker teal on hover */
+        }
+
+        /* General Button Styling */
+        .btn-container {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            font-size: 1em;
+            background-color: var(--primary-dark);
+            color: var(--white);
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn:hover {
+            background-color: #1f2236;
+            transform: translateY(-2px); /* Slight lift on hover */
+        }
+
+        /* Styles for contenteditable elements */
+        .editable:focus {
+            outline: 2px dashed var(--accent-color); /* More prominent focus cue */
+            outline-offset: 3px;
+        }
+
+        /* Contact icons */
+        .contact-info p {
+            display: flex;
+            align-items: center;
+            gap: 8px; /* Space between icon and text */
+            margin-bottom: 8px;
+        }
+        .contact-info p span {
+            font-size: 1.2em; /* Adjust icon size */
+            color: var(--text-light); /* Icon color in left column */
+        }
+
+        /* --- Dynamic Content Buttons --- */
+        .add-item-btn, .remove-item-btn, .add-section-btn, .remove-section-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1em;
+            padding: 0 5px;
+            color: var(--accent-color);
+            transition: color 0.2s ease;
+            margin-left: 5px;
+            opacity: 0.8;
+        }
+        .add-item-btn:hover, .remove-item-btn:hover, .add-section-btn:hover, .remove-section-btn:hover {
+            color: #16a085;
+            opacity: 1;
+        }
+
+        .add-item-btn {
+            float: right; /* Position add button to the right of the ul */
+            transform: translateY(-5px); /* Adjust vertical position */
+            color: var(--primary-dark); /* Darker color for add buttons on white background */
+        }
+        .left .add-item-btn {
+            color: var(--text-light); /* White for add buttons on dark background */
+        }
+
+        .remove-item-btn {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.9em;
+            color: #e74c3c; /* Red for remove */
+        }
+        .left .remove-item-btn {
+            color: #f1c40f; /* Yellow for remove on dark background */
+        }
+
+        .section-actions {
+            display: flex;
+            gap: 5px;
+        }
+
+        .remove-section-btn {
+            color: #e74c3c; /* Red for remove section button */
+            font-size: 1em;
+        }
+        .add-section-btn {
+            color: var(--accent-color);
+            font-size: 1em;
+            margin-left: 10px; /* Space from other elements */
+        }
+        .right h2 .add-section-btn { /* Specific positioning for add section button next to H2 */
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2em;
+        }
+
+
+        /* Print specific styles */
+        @media print {
+            body {
+                margin: 0;
+                padding: 0;
+                background-color: var(--white); /* White background for print */
+            }
+            .cv-wrapper {
+                box-shadow: none; /* Remove shadow in print */
+                margin: 0;
+                width: 210mm;
+                height: 297mm;
+                border-radius: 0; /* No rounded corners in print */
+            }
+            .btn-container, .upload-btn, .upload-btn label,
+            .add-item-btn, .remove-item-btn, .add-section-btn, .remove-section-btn,
+            .section-actions { /* Hide all dynamic buttons on print */
+                display: none !important;
+            }
+            /* Ensure text editable outline is hidden on print */
+            .editable:focus {
+                outline: none !important;
+            }
+        }
+    </style>
+
+</head>
+<body>
+
+    <div class="btn-container">
+        <button class="btn" onclick="downloadPDF()">📄 Descargar como PDF</button>
+    </div>
+
+    <div id="cv" class="cv-wrapper">
+        <div class="left">
+            <img id="profilePhoto" src="http://googleusercontent.com/file_content/0" alt="Foto de perfil" />
+            <div class="upload-btn">
+                <input type="file" id="photoUpload" accept="image/*" onchange="previewPhoto(event)">
+                <label for="photoUpload">Cambiar Foto</label>
+            </div>
+
+            <h2 contenteditable="true" class="editable">John Torres Alva</h2>
+            <p contenteditable="true" class="editable"><strong>Programador</strong></p>
+
+            <h3 style="margin-top: 25px;">Contacto</h3>
+            <div class="contact-info">
+                <p>📞 <span contenteditable="true" class="editable">+51 933 276 571</span></p>
+                <p>📧 <span contenteditable="true" class="editable">torresalva95@gmail.com</span></p>
+                <p>📍 <span contenteditable="true" class="editable">Carabayllo, Lima, Perú</span></p>
+            </div>
+
+            <h3>Educación <button class="add-item-btn" onclick="addNestedEducation(this)"><i class="fas fa-plus-circle"></i></button></h3>
+            <ul id="education-list">
+                <li contenteditable="true" class="editable list-item-wrapper">
+                    <strong>Universidad Privada del Norte</strong>
+                    <ul>
+                        <li contenteditable="true" class="editable list-item-wrapper">Ingeniería de Sistemas Computacionales <button class="remove-item-btn" onclick="removeListItem(this)"><i class="fas fa-times-circle"></i></button></li>
+                    </ul>
+                    <button class="remove-item-btn" onclick="removeListItem(this)"><i class="fas fa-times-circle"></i></button>
+                </li>
+            </ul>
+
+            <h3>Idiomas <button class="add-item-btn" onclick="addListItem(this)"><i class="fas fa-plus-circle"></i></button></h3>
+            <ul id="languages-list">
+                <li contenteditable="true" class="editable list-item-wrapper">Español: Nativo <button class="remove-item-btn" onclick="removeListItem(this)"><i class="fas fa-times-circle"></i></button></li>
+                <li contenteditable="true" class="editable list-item-wrapper">Inglés: Básico <button class="remove-item-btn" onclick="removeListItem(this)"><i class="fas fa-times-circle"></i></button></li>
+            </ul>
+
+            <h3>Competencias <button class="add-item-btn" onclick="addListItem(this)"><i class="fas fa-plus-circle"></i></button></h3>
+            <ul id="skills-list">
+                <li contenteditable="true" class="editable list-item-wrapper">Adaptabilidad al cambio <button class="remove-item-btn" onclick="removeListItem(this)"><i class="fas fa-times-circle"></i></button></li>
+                <li contenteditable="true" class="editable list-item-wrapper">Compromiso e integridad <button class="remove-item-btn" onclick="removeListItem(this)"><i class="fas fa-times-circle"></i></button></li>
+                <li contenteditable="true" class="editable list-item-wrapper">Liderazgo <button class="remove-item-btn" onclick="removeListItem(this)"><i class="fas fa-times-circle"></i></button></li>
+            </ul>
+
+            <h3>Capacitaciones <button class="add-item-btn" onclick="addNestedTraining(this)"><i class="fas fa-plus-circle"></i></button></h3>
+            <ul id="training-list">
+                <li contenteditable="true" class="editable list-item-wrapper">
+                    <strong>Sistemas Uni</strong>
+                    <ul>
+                        <li contenteditable="true" class="editable list-item-wrapper">Redes y Ensamblaje <button class="remove-item-btn" onclick="removeListItem(this)"><i class="fas fa-times-circle"></i></button></li>
+                    </ul>
+                    <button class="remove-item-btn" onclick="removeListItem(this)"><i class="fas fa-times-circle"></i></button>
+                </li>
+                <li contenteditable="true" class="editable list-item-wrapper">
+                    <strong>WE Educación Ejecutiva</strong>
+                    <ul>
+                        <li contenteditable="true" class="editable list-item-wrapper">Sql server for Analytics <button class="remove-item-btn" onclick="removeListItem(this)"><i class="fas fa-times-circle"></i></button></li>
+                        <li contenteditable="true" class="editable list-item-wrapper">Analista de Datos <button class="remove-item-btn" onclick="removeListItem(this)"><i class="fas fa-times-circle"></i></button></li>
+                    </ul>
+                    <button class="remove-item-btn" onclick="removeListItem(this)"><i class="fas fa-times-circle"></i></button>
+                </li>
+            </ul>
+        </div>
+
+        <div class="right">
+            <h2 style="margin-top: 0;">Perfil Profesional</h2>
+            <p contenteditable="true" class="editable">
+                Programador con experiencia en diagnóstico técnico y desarrollo de soluciones personalizadas para mejorar la eficiencia operativa. Especialista en personalización en Odoo, trabajando con equipos multidisciplinarios para garantizar la estabilidad y funcionalidad del sistema.
+            </p>
+
+            <h2>Experiencia Laboral <button class="add-section-btn" onclick="addExperienceSection()"><i class="fas fa-plus-circle"></i></button></h2>
+
+            <div class="experience-block">
+                <h3 contenteditable="true" class="editable">Encargado de TI - FiberPRO
+                    <span class="section-actions">
+                        <button class="remove-section-btn" onclick="removeSection(this, 'experience')"><i class="fas fa-trash-alt"></i></button>
+                    </span>
+                </h3>
+                <p contenteditable="true" class="editable"><em>Mar 2022 - Actualidad (3 años 5 meses)</em></p>
+                <p contenteditable="true" class="editable">Carabayllo, Lima, Perú</p>
+                <ul class="experience-responsibilities">
+                    <li contenteditable="true" class="editable list-item-wrapper">Dar soporte a usuarios sobre el uso del sistema ERP ODOO. <button class="remove-item-btn" onclick="removeListItem(this)"><i class="fas fa-times-circle"></i></button></li>
+                    <li contenteditable="true" class="editable list-item-wrapper">Desarrollar funciones en cualquier módulo del ERP mediante Odoo Studio según requerimientos. <button class="remove-item-btn" onclick="removeListItem(this)"><i class="fas fa-times-circle"></i></button></li>
+                    <li contenteditable="true" class="editable list-item-wrapper">Elaboración de informes quincenales y mensuales sobre consumo de minutos del área NOC. <button class="remove-item-btn" onclick="removeListItem(this)"><i class="fas fa-times-circle"></i></button></li>
+                    <li contenteditable="true" class="editable list-item-wrapper">Resolver incidencias con software en las computadoras de la empresa. <button class="remove-item-btn" onclick="removeListItem(this)"><i class="fas fa-times-circle"></i></button></li>
+                    <li contenteditable="true" class="editable list-item-wrapper">Diagnóstico y resolución de problemas técnicos en implementación y funcionamiento de ODOO. <button class="remove-item-btn" onclick="removeListItem(this)"><i class="fas fa-times-circle"></i></button></li>
+                    <li contenteditable="true" class="editable list-item-wrapper">Configuración y personalización de módulos para adaptarse a necesidades empresariales. <button class="remove-item-btn" onclick="removeListItem(this)"><i class="fas fa-times-circle"></i></button></li>
+                    <li contenteditable="true" class="editable list-item-wrapper">Colaboración con equipo de desarrollo para mejorar estabilidad y seguridad del sistema. <button class="remove-item-btn" onclick="removeListItem(this)"><i class="fas fa-times-circle"></i></button></li>
+                    <li contenteditable="true" class="editable list-item-wrapper">Interacción directa con usuarios para comprender y satisfacer sus necesidades. <button class="remove-item-btn" onclick="removeListItem(this)"><i class="fas fa-times-circle"></i></button></li>
+                    <li contenteditable="true" class="editable list-item-wrapper">Diseño e implementación de soluciones personalizadas para mejorar la eficiencia operativa. <button class="remove-item-btn" onclick="removeListItem(this)"><i class="fas fa-times-circle"></i></button></li>
+                    <li contenteditable="true" class="editable list-item-wrapper">Capacitación y asistencia a usuarios en el uso del sistema. <button class="remove-item-btn" onclick="removeListItem(this)"><i class="fas fa-times-circle"></i></button></li>
+                    <button class="add-item-btn" onclick="addListItem(this, 'experience')"><i class="fas fa-plus-circle"></i></button>
+                </ul>
+            </div>
+
+            <div class="experience-block">
+                <h3 contenteditable="true" class="editable">Operador de soporte técnico - FiberPRO
+                    <span class="section-actions">
+                        <button class="remove-section-btn" onclick="removeSection(this, 'experience')"><i class="fas fa-trash-alt"></i></button>
+                    </span>
+                </h3>
+                <p contenteditable="true" class="editable"><em>Ago 2021 - Feb 2022 (7 meses)</em></p>
+                <p contenteditable="true" class="editable">Carabayllo, Lima, Perú</p>
+                <ul class="experience-responsibilities">
+                    <li contenteditable="true" class="editable list-item-wrapper">Atender al cliente en temas de soporte de la red. <button class="remove-item-btn" onclick="removeListItem(this)"><i class="fas fa-times-circle"></i></button></li>
+                    <li contenteditable="true" class="editable list-item-wrapper">Seguimiento de los tickets de atención al cliente. <button class="remove-item-btn" onclick="removeListItem(this)"><i class="fas fa-times-circle"></i></button></li>
+                    <li contenteditable="true" class="editable list-item-wrapper">Realizar activaciones en equipos de comunicaciones OLT y MK. <button class="remove-item-btn" onclick="removeListItem(this)"><i class="fas fa-times-circle"></i></button></li>
+                    <li contenteditable="true" class="editable list-item-wrapper">Interactuar con equipo de campo para solución de averías. <button class="remove-item-btn" onclick="removeListItem(this)"><i class="fas fa-times-circle"></i></button></li>
+                    <li contenteditable="true" class="editable list-item-wrapper">Gestionar incidentes y realizar escalonamiento correspondiente. <button class="remove-item-btn" onclick="removeListItem(this)"><i class="fas fa-times-circle"></i></button></li>
+                    <li contenteditable="true" class="editable list-item-wrapper">Hacer backups quincenales y mensuales de Mikrotiks y OLTs. <button class="remove-item-btn" onclick="removeListItem(this)"><i class="fas fa-times-circle"></i></button></li>
+                    <button class="add-item-btn" onclick="addListItem(this, 'experience')"><i class="fas fa-plus-circle"></i></button>
+                </ul>
+            </div>
+
+            <div class="experience-block">
+                <h3 contenteditable="true" class="editable">Administrador de servidor
+                    <span class="section-actions">
+                        <button class="remove-section-btn" onclick="removeSection(this, 'experience')"><i class="fas fa-trash-alt"></i></button>
+                    </span>
+                </h3>
+                <p contenteditable="true" class="editable"><em>Jul 2019 - Sept 2019 (3 meses)</em></p>
+                <p contenteditable="true" class="editable">Juventud Globalizada - Ciencia y Tecnología</p>
+                <ul class="experience-responsibilities">
+                    <li contenteditable="true" class="editable list-item-wrapper">Configuración de servidor para las páginas desarrolladas en la ONG. <button class="remove-item-btn" onclick="removeListItem(this)"><i class="fas fa-times-circle"></i></button></li>
+                    <li contenteditable="true" class="editable list-item-wrapper">Actualización y mantenimiento del servidor. <button class="remove-item-btn" onclick="removeListItem(this)"><i class="fas fa-times-circle"></i></button></li>
+                    <li contenteditable="true" class="editable list-item-wrapper">Elaboración de manuales para el uso del servidor para alojar sitio web. <button class="remove-item-btn" onclick="removeListItem(this)"><i class="fas fa-times-circle"></i></button></li>
+                    <li contenteditable="true" class="editable list-item-wrapper">Elaboración de manuales de otras funciones solicitadas por el jefe de la ONG. <button class="remove-item-btn" onclick="removeListItem(this)"><i class="fas fa-times-circle"></i></button></li>
+                    <button class="add-item-btn" onclick="addListItem(this, 'experience')"><i class="fas fa-plus-circle"></i></button>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Previsualización de foto
+        function previewPhoto(event) {
+            const reader = new FileReader();
+            reader.onload = function () {
+                document.getElementById('profilePhoto').src = reader.result;
+            }
+            reader.readAsDataURL(event.target.files[0]);
+        }
+
+        // --- Dynamic Content Functions ---
+
+        // Function to add a regular list item
+        function addListItem(buttonElement, type = 'regular') {
+            let parentUl;
+            if (type === 'experience') {
+                // For experience section, the button is inside the ul, so we need its parent
+                parentUl = buttonElement.closest('ul');
+            } else {
+                // For other lists, the button is next to the h3, find the next ul
+                parentUl = buttonElement.parentNode.nextElementSibling;
+            }
+            
+            const newLi = document.createElement('li');
+            newLi.contentEditable = "true";
+            newLi.className = "editable list-item-wrapper";
+            newLi.innerText = "Nuevo elemento"; // Default text
+
+            const removeBtn = document.createElement('button');
+            removeBtn.className = "remove-item-btn";
+            removeBtn.innerHTML = '<i class="fas fa-times-circle"></i>';
+            removeBtn.onclick = function() { removeListItem(this); };
+            newLi.appendChild(removeBtn);
+
+            // Insert the new li before the add button if it exists, otherwise at the end
+            if (type === 'experience' && buttonElement.parentNode === parentUl) {
+                parentUl.insertBefore(newLi, buttonElement);
+            } else {
+                parentUl.appendChild(newLi);
+            }
+        }
+
+        // Function to add a nested education item
+        function addNestedEducation(buttonElement) {
+            const parentUl = document.getElementById('education-list');
+            const newLi = document.createElement('li');
+            newLi.contentEditable = "true";
+            newLi.className = "editable list-item-wrapper";
+            newLi.innerHTML = `
+                <strong>Nueva Universidad</strong>
+                <ul>
+                    <li contenteditable="true" class="editable list-item-wrapper">Nueva Carrera <button class="remove-item-btn" onclick="removeListItem(this)"><i class="fas fa-times-circle"></i></button></li>
+                </ul>
+                <button class="remove-item-btn" onclick="removeListItem(this)"><i class="fas fa-times-circle"></i></button>
+            `;
+            parentUl.appendChild(newLi);
+        }
+
+        // Function to add a nested training item
+        function addNestedTraining(buttonElement) {
+            const parentUl = document.getElementById('training-list');
+            const newLi = document.createElement('li');
+            newLi.contentEditable = "true";
+            newLi.className = "editable list-item-wrapper";
+            newLi.innerHTML = `
+                <strong>Nueva Capacitación</strong>
+                <ul>
+                    <li contenteditable="true" class="editable list-item-wrapper">Nuevo Curso <button class="remove-item-btn" onclick="removeListItem(this)"><i class="fas fa-times-circle"></i></button></li>
+                </ul>
+                <button class="remove-item-btn" onclick="removeListItem(this)"><i class="fas fa-times-circle"></i></button>
+            `;
+            parentUl.appendChild(newLi);
+        }
+
+        // Function to remove a list item
+        function removeListItem(buttonElement) {
+            const listItem = buttonElement.closest('.list-item-wrapper');
+            if (listItem) {
+                listItem.remove();
+            }
+        }
+
+        // Function to add a new experience section
+        function addExperienceSection() {
+            const rightColumn = document.querySelector('.right');
+            const newExperienceBlock = document.createElement('div');
+            newExperienceBlock.className = 'experience-block';
+            newExperienceBlock.innerHTML = `
+                <h3 contenteditable="true" class="editable">Nuevo Puesto - Nueva Empresa
+                    <span class="section-actions">
+                        <button class="remove-section-btn" onclick="removeSection(this, 'experience')"><i class="fas fa-trash-alt"></i></button>
+                    </span>
+                </h3>
+                <p contenteditable="true" class="editable"><em>Fecha Inicio - Fecha Fin (Duración)</em></p>
+                <p contenteditable="true" class="editable">Ciudad, País</p>
+                <ul class="experience-responsibilities">
+                    <li contenteditable="true" class="editable list-item-wrapper">Nueva responsabilidad. <button class="remove-item-btn" onclick="removeListItem(this)"><i class="fas fa-times-circle"></i></button></li>
+                    <button class="add-item-btn" onclick="addListItem(this, 'experience')"><i class="fas fa-plus-circle"></i></button>
+                </ul>
+            `;
+            // Find the last experience block or the "Experiencia Laboral" h2 to insert after
+            const lastExperienceBlock = rightColumn.querySelector('.experience-block:last-of-type');
+            const experienceH2 = rightColumn.querySelector('h2:contains("Experiencia Laboral")');
+
+            if (lastExperienceBlock) {
+                lastExperienceBlock.after(newExperienceBlock);
+            } else if (experienceH2) {
+                experienceH2.after(newExperienceBlock);
+            } else {
+                rightColumn.appendChild(newExperienceBlock); // Fallback
+            }
+        }
+
+        // Function to remove an entire section (e.g., Experience block)
+        function removeSection(buttonElement, type) {
+            if (type === 'experience') {
+                const experienceBlock = buttonElement.closest('.experience-block');
+                if (experienceBlock) {
+                    experienceBlock.remove();
+                }
+            }
+            // Add more conditions here for other section types if needed
+        }
+
+        // Helper to check if an element contains specific text (for h2 finding)
+        if (!Element.prototype.matches) {
+            Element.prototype.matches = Element.prototype.msMatchesSelector || Element.prototype.webkitMatchesSelector;
+        }
+        if (!Element.prototype.closest) {
+            Element.prototype.closest = function(s) {
+                var el = this;
+                do {
+                    if (el.matches(s)) return el;
+                    el = el.parentElement || el.parentNode;
+                } while (el !== null && el.nodeType === 1);
+                return null;
+            };
+        }
+        // Polyfill for :contains pseudo-class (not standard CSS, but useful for selector)
+        // This won't work with querySelector directly, but the logic can be adapted
+        // For simplicity, we'll use a direct querySelector for 'h2:contains("Experiencia Laboral")'
+        // which might need to be adjusted if the text itself becomes editable.
+        // For this specific use, targeting by text content is okay since it's a fixed heading.
+        // A more robust solution might involve adding a data-attribute like data-section="experience-laboral"
+        // to the h2 and selecting by that.
+
+        // --- PDF Download Function ---
+        function downloadPDF() {
+            // Hide all dynamic buttons before generating PDF
+            document.querySelectorAll('.add-item-btn, .remove-item-btn, .add-section-btn, .remove-section-btn, .upload-btn, .btn-container').forEach(el => {
+                el.style.display = 'none';
+            });
+            
+            // Re-enable contenteditable outlines for better text clarity in PDF if desired,
+            // or ensure they are hidden. Current CSS hides them in print media query.
+
+            const name = document.querySelector('.left h2.editable')?.innerText?.trim() || 'CV';
+            const safeFilename = `CV-${name.replace(/[\\/:*?"<>|]/g, '').replace(/\s+/g, '_')}.pdf`;
+
+            const element = document.getElementById("cv");
+            const opt = {
+                margin: [0, 0, 0, 0],
+                filename: safeFilename,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 3, logging: true, dpi: 192, letterRendering: true },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            html2pdf().set(opt).from(element).save().then(() => {
+                // Show all dynamic buttons again after PDF generation
+                document.querySelectorAll('.add-item-btn, .remove-item-btn, .add-section-btn, .remove-section-btn, .upload-btn, .btn-container').forEach(el => {
+                    el.style.display = ''; // Revert to default display
+                });
+            });
+        }
+    </script>
+
+</body>
+</html>
