@@ -297,26 +297,31 @@
 
     // Descargar PDF con buena escala y márgenes
     function downloadPDF() {
-      // Ocultar el input file y el botón de descarga antes de generar PDF
-      document.querySelector('.upload-btn').style.display = 'none';
-      document.querySelector('.btn-container').style.display = 'none';
+  // Ocultar el input file y el botón de descarga antes de generar PDF
+  document.querySelector('.upload-btn').style.display = 'none';
+  document.querySelector('.btn-container').style.display = 'none';
 
+  // Obtener el texto del h2 editable (nombre)
+  const name = document.querySelector('.left h2.editable')?.innerText?.trim() || 'CV';
 
-      const element = document.getElementById("cv");
-      const opt = {
-        margin: [0, 0, 0, 0], /* Margins are handled by the cv-wrapper now */
-        filename: 'CV-JohnTorresAlva.pdf',
-        image: { type: 'jpeg', quality: 1 },
-        html2canvas: { scale: 3, logging: true, dpi: 192, letterRendering: true }, /* Increased scale for better quality */
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-      };
+  // Limpiar el nombre para evitar caracteres ilegales en el nombre de archivo
+  const safeFilename = `CV-${name.replace(/[\\/:*?"<>|]/g, '').replace(/\s+/g, '_')}.pdf`;
 
-      html2pdf().set(opt).from(element).save().then(() => {
-        // Volver a mostrar el input file y el botón de descarga después de generar el PDF
-        document.querySelector('.upload-btn').style.display = 'block';
-        document.querySelector('.btn-container').style.display = 'block';
-      });
-    }
+  const element = document.getElementById("cv");
+  const opt = {
+    margin: [0, 0, 0, 0],
+    filename: safeFilename,
+    image: { type: 'jpeg', quality: 1 },
+    html2canvas: { scale: 3, logging: true, dpi: 192, letterRendering: true },
+    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+  };
+
+  html2pdf().set(opt).from(element).save().then(() => {
+    // Volver a mostrar los elementos
+    document.querySelector('.upload-btn').style.display = 'block';
+    document.querySelector('.btn-container').style.display = 'block';
+  });
+}
   </script>
 
 </body>
