@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>CV - John Torres Alva</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 20px; /* Some padding around the entire body for visual comfort on screen */
+      display: flex;
+      flex-direction: column;
+      align-items: center; /* Center the CV on the screen */
+    }
+
+    .cv-wrapper {
+      width: 210mm; /* A4 width */
+      min-height: 296mm; /* Adjusted min-height slightly for buffer */
+      margin: 0 auto; /* Center the CV on the page */
+      padding: 0; /* No internal padding here, columns will manage it */
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      display: flex;
+      background: #fff;
+    }
+
+    .left {
+      width: 28%; /* Adjusted width for left column */
+      padding: 18px; /* Slightly reduced padding */
+      background-color: #2a2e4b;
+      color: white;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .right {
+      width: 72%; /* Adjusted width for right column */
+      padding: 18px; /* Slightly reduced padding */
+    }
+
+    h1, h2, h3, p, ul, li {
+      margin: 0;
+      padding: 0;
+      text-align: left; /* Ensure text within columns is left-aligned by default */
+    }
+
+    h2 {
+      font-size: 1.2em; /* Slightly larger headings */
+      margin-bottom: 6px; /* Further reduced margin */
+    }
+
+    h3 {
+      font-size: 1em; /* Standard heading size */
+      margin-top: 10px; /* Space before sub-headings */
+      margin-bottom: 3px; /* Further reduced margin */
+    }
+
+    p {
+      font-size: 0.9em; /* Standard paragraph text size */
+      line-height: 1.35; /* Slightly reduced line height */
+      margin-bottom: 6px; /* Further reduced margin */
+    }
+
+    ul {
+      padding-left: 20px;
+      list-style-type: disc; /* Ensure bullet points are visible */
+      margin-top: 0; /* No top margin on ul itself */
+      margin-bottom: 6px; /* Adjusted margin for ul */
+    }
+
+    li {
+      font-size: 0.9em;
+      line-height: 1.3; /* Slightly reduced line height */
+      margin-top: 2px; /* Reduced margin */
+      margin-bottom: 2px; /* Reduced margin */
+    }
+
+    /* Nested ul within li should have minimal vertical margins to prevent excess space */
+    ul ul {
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+    ul ul li {
+      font-size: 0.82em; /* Slightly smaller for nested items */
+      margin-top: 1px;
+      margin-bottom: 1px;
+    }
+
+    /* Specific adjustment for the last ul in each column to prevent overflow */
+    .left ul:last-of-type,
+    .right ul:last-of-type {
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+
+    .left h2, .left h3 {
+      color: white;
+      text-align: left; /* Explicitly left-align headings in left column */
+    }
+
+    /* Override for the name and title in the left column to be centered */
+    .left h2.editable:first-of-type,
+    .left p.editable:nth-of-type(1) { /* Assuming this is the "Programador" paragraph */
+        text-align: center;
+        width: 100%; /* Ensure it takes full width to center effectively */
+    }
+
+    img#profilePhoto {
+      width: 180px; /* Fixed width for the image */
+      height: 250px; /* Fixed height for the image */
+      border-radius: 50%; /* Make it circular */
+      object-fit: cover; /* Ensure the image covers the area without distortion */
+      background: azure;
+      display: block;
+      margin: 5px auto 5px auto; /* Keep current margin */
+      padding: 0;
+      border: 3px solid #fff; /* White border around the photo */
+    }
+
+    .upload-btn {
+      margin-top: 8px; /* Keep current margin */
+      margin-bottom: 15px; /* Keep current margin */
+      color: white;
+      font-size: 12px;
+      text-align: center; /* Center the file input text */
+    }
+
+    .btn-container {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #2a2e4b;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+
+    .btn:hover {
+      background-color: #1f2236;
+    }
+
+    /* Styles for contenteditable elements */
+    .editable:focus {
+      outline: 1px dashed #ccc; /* Visual cue when editing */
+    }
+
+    /* Print specific styles */
+    @media print {
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      .cv-wrapper {
+        box-shadow: none; /* Remove shadow in print */
+        margin: 0; /* No margin around the A4 page in print */
+        width: 210mm;
+        height: 297mm; /* Ensure it's exactly A4 height in print */
+      }
+      .btn-container, .upload-btn {
+        display: none; /* Hide buttons when printing */
+      }
+    }
+  </style>
+
+</head>
+<body>
+
+  <div class="btn-container">
+    <button class="btn" onclick="downloadPDF()">📄 Descargar como PDF</button>
+  </div>
+
+  <div id="cv" class="cv-wrapper">
+    <div class="left">
+      <img id="profilePhoto" src="http://googleusercontent.com/file_content/0" alt="Foto de perfil" />
+      <div class="upload-btn">
+        <input type="file" accept="image/*" onchange="previewPhoto(event)">
+      </div>
+
+      <h2 contenteditable="true" class="editable">John Torres Alva</h2>
+      <p contenteditable="true" class="editable"><strong>Programador</strong></p>
+
+      <h3>Contacto</h3>
+      <p contenteditable="true" class="editable">📞 +51 933 276 571</p>
+      <p contenteditable="true" class="editable">📧 torresalva95@gmail.com</p>
+      <p contenteditable="true" class="editable">📍 Carabayllo, Lima, Perú</p>
+
+      <h3>Educación</h3>
+      <ul>
+        <li contenteditable="true" class="editable">
+          <strong>Universidad Privada del Norte</strong>
+          <ul>
+            <li contenteditable="true" class="editable">Ingeniería de Sistemas Computacionales</li>
+          </ul>
+        </li>
+      </ul>
+
+      <h3>Idiomas</h3>
+      <ul>
+        <li contenteditable="true" class="editable">Español: Nativo</li>
+        <li contenteditable="true" class="editable">Inglés: Básico</li>
+      </ul>
+
+      <h3>Competencias</h3>
+      <ul>
+        <li contenteditable="true" class="editable">Adaptabilidad al cambio</li>
+        <li contenteditable="true" class="editable">Compromiso e integridad</li>
+        <li contenteditable="true" class="editable">Liderazgo</li>
+      </ul>
+
+      <h3>Capacitaciones</h3>
+      <ul>
+        <li contenteditable="true" class="editable">
+          <strong>Sistemas Uni</strong>
+          <ul>
+            <li contenteditable="true" class="editable">Redes y Ensamblaje</li>
+          </ul>
+        </li>
+        <li contenteditable="true" class="editable">
+          <strong>WE Educación Ejecutiva</strong>
+          <ul>
+            <li contenteditable="true" class="editable">Sql server for Analytics</li>
+            <li contenteditable="true" class="editable">Analista de Datos</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+
+    <div class="right">
+      <h2 style="margin-top: 0;">Perfil Profesional</h2>
+      <p contenteditable="true" class="editable">
+        Programador con experiencia en diagnóstico técnico y desarrollo de soluciones personalizadas para mejorar la eficiencia operativa. Especialista en personalización en Odoo, trabajando con equipos multidisciplinarios para garantizar la estabilidad y funcionalidad del sistema.
+      </p>
+
+      <h2>Experiencia Laboral</h2>
+
+      <h3 contenteditable="true" class="editable">Encargado de TI - FiberPRO</h3>
+      <p contenteditable="true" class="editable"><em>Mar 2022 - Actualidad (3 años 5 meses)</em></p>
+      <p contenteditable="true" class="editable">Carabayllo, Lima, Perú</p>
+      <ul>
+        <li contenteditable="true" class="editable">Dar soporte a usuarios sobre el uso del sistema ERP ODOO.</li>
+        <li contenteditable="true" class="editable">Desarrollar funciones en cualquier módulo del ERP mediante Odoo Studio según requerimientos.</li>
+        <li contenteditable="true" class="editable">Elaboración de informes quincenales y mensuales sobre consumo de minutos del área NOC.</li>
+        <li contenteditable="true" class="editable">Resolver incidencias con software en las computadoras de la empresa.</li>
+        <li contenteditable="true" class="editable">Diagnóstico y resolución de problemas técnicos en implementación y funcionamiento de ODOO.</li>
+        <li contenteditable="true" class="editable">Configuración y personalización de módulos para adaptarse a necesidades empresariales.</li>
+        <li contenteditable="true" class="editable">Colaboración con equipo de desarrollo para mejorar estabilidad y seguridad del sistema.</li>
+        <li contenteditable="true" class="editable">Interacción directa con usuarios para comprender y satisfacer sus necesidades.</li>
+        <li contenteditable="true" class="editable">Diseño e implementación de soluciones personalizadas para mejorar la eficiencia operativa.</li>
+        <li contenteditable="true" class="editable">Capacitación y asistencia a usuarios en el uso del sistema.</li>
+      </ul>
+
+      <h3 contenteditable="true" class="editable">Operador de soporte técnico - FiberPRO</h3>
+      <p contenteditable="true" class="editable"><em>Ago 2021 - Feb 2022 (7 meses)</em></p>
+      <p contenteditable="true" class="editable">Carabayllo, Lima, Perú</p>
+      <ul>
+        <li contenteditable="true" class="editable">Atender al cliente en temas de soporte de la red.</li>
+        <li contenteditable="true" class="editable">Seguimiento de los tickets de atención al cliente.</li>
+        <li contenteditable="true" class="editable">Realizar activaciones en equipos de comunicaciones OLT y MK.</li>
+        <li contenteditable="true" class="editable">Interactuar con equipo de campo para solución de averías.</li>
+        <li contenteditable="true" class="editable">Gestionar incidentes y realizar escalonamiento correspondiente.</li>
+        <li contenteditable="true" class="editable">Hacer backups quincenales y mensuales de Mikrotiks y OLTs.</li>
+      </ul>
+
+      <h3 contenteditable="true" class="editable">Administrador de servidor</h3>
+      <p contenteditable="true" class="editable"><em>Jul 2019 - Sept 2019 (3 meses)</em></p>
+      <p contenteditable="true" class="editable">Juventud Globalizada - Ciencia y Tecnología</p>
+      <ul>
+        <li contenteditable="true" class="editable">Configuración de servidor para las páginas desarrolladas en la ONG.</li>
+        <li contenteditable="true" class="editable">Actualización y mantenimiento del servidor.</li>
+        <li contenteditable="true" class="editable">Elaboración de manuales para el uso del servidor para alojar sitio web.</li>
+        <li contenteditable="true" class="editable">Elaboración de manuales de otras funciones solicitadas por el jefe de la ONG.</li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    // Previsualización de foto
+    function previewPhoto(event) {
+      const reader = new FileReader();
+      reader.onload = function () {
+        document.getElementById('profilePhoto').src = reader.result;
+      }
+      reader.readAsDataURL(event.target.files[0]);
+    }
+
+    // Descargar PDF con buena escala y márgenes
+    function downloadPDF() {
+      // Ocultar el input file y el botón de descarga antes de generar PDF
+      document.querySelector('.upload-btn').style.display = 'none';
+      document.querySelector('.btn-container').style.display = 'none';
+
+
+      const element = document.getElementById("cv");
+      const opt = {
+        margin: [0, 0, 0, 0], /* Margins are handled by the cv-wrapper now */
+        filename: 'CV-JohnTorresAlva.pdf',
+        image: { type: 'jpeg', quality: 1 },
+        html2canvas: { scale: 3, logging: true, dpi: 192, letterRendering: true }, /* Increased scale for better quality */
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      };
+
+      html2pdf().set(opt).from(element).save().then(() => {
+        // Volver a mostrar el input file y el botón de descarga después de generar el PDF
+        document.querySelector('.upload-btn').style.display = 'block';
+        document.querySelector('.btn-container').style.display = 'block';
+      });
+    }
+  </script>
+
+</body>
+</html>
